@@ -1,0 +1,43 @@
+  </main>
+  
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Pahlavi for Iran</h3>
+          <p>Information and news about Pahlavi dynasty history and current events in Iran.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="/history">History</a></li>
+            <li><a href="/news">News</a></li>
+            <li><a href="/reza-pahlavi">Reza Pahlavi</a></li>
+            <% if (typeof categories !== 'undefined' && categories) { %>
+              <% categories.forEach(category => { %>
+                <% if (category.slug !== 'history' && category.slug !== 'news' && category.slug !== 'reza-pahlavi') { %>
+                  <li><a href="/category/<%= category.slug %>"><%= category.name %></a></li>
+                <% } %>
+              <% }) %>
+            <% } %>
+          </ul>
+        </div>
+        
+    <div class="footer-section">
+      <h3>Information</h3>
+      <p>For educational and informational purposes. All news content is fully sourced with appropriate attribution.</p>
+    </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; <%= new Date().getFullYear() %> Pahlavi for Iran. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="/js/animations.js"></script>
+  <script src="/js/public.js"></script>
+</body>
+</html>
+

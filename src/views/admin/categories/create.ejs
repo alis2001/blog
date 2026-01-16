@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+
+<div class="admin-container">
+  <div class="page-header">
+    <h1>Create Category</h1>
+    <a href="/admin/categories" class="btn">Back to Categories</a>
+  </div>
+  
+  <% if (errors && errors.length > 0) { %>
+    <div class="alert alert-error">
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+  
+  <form method="POST" action="/admin/categories/create" class="category-form">
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input type="text" id="name" name="name" value="<%= formData.name || '' %>" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="3"><%= formData.description || '' %></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label for="order">Order</label>
+      <input type="number" id="order" name="order" value="<%= formData.order || 0 %>">
+      <small>Lower numbers appear first</small>
+    </div>
+    
+    <div class="form-group checkbox">
+      <label>
+        <input type="checkbox" name="isActive" <%= !formData.hasOwnProperty('isActive') || formData.isActive ? 'checked' : '' %>>
+        Active
+      </label>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Create Category</button>
+      <a href="/admin/categories" class="btn">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
+

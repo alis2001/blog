@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Pahlavi for Iran' %></title>
+  <meta name="description" content="Information portal for Pahlavi dynasty history and Iran revolution news">
+  <link rel="stylesheet" href="/css/public.css?v=<%= Date.now() %>">
+  <link rel="stylesheet" href="/css/home.css?v=<%= Date.now() %>">
+  <link rel="stylesheet" href="/css/sections.css?v=<%= Date.now() %>">
+  <link rel="stylesheet" href="/css/reza-pahlavi.css?v=<%= Date.now() %>">
+  <link rel="stylesheet" href="/css/animations.css?v=<%= Date.now() %>">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <a href="/">
+            <img src="/images/lion-and-sun.png" alt="Lion and Sun" class="logo-icon">
+            <span>Pahlavi for Iran</span>
+          </a>
+        </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/history">History</a></li>
+          <li><a href="/news">News</a></li>
+          <li><a href="/reza-pahlavi">Reza Pahlavi</a></li>
+          <% if (typeof categories !== 'undefined' && categories) { %>
+            <% categories.forEach(category => { %>
+              <% if (category.slug !== 'history' && category.slug !== 'news' && category.slug !== 'reza-pahlavi') { %>
+                <li><a href="/category/<%= category.slug %>"><%= category.name %></a></li>
+              <% } %>
+            <% }) %>
+          <% } %>
+        </ul>
+      </nav>
+      </div>
+    </div>
+  </header>
+  
+  <main class="site-main">
+

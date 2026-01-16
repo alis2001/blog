@@ -1,0 +1,75 @@
+<%- include('../partials/header') %>
+
+<div class="admin-container">
+  <div class="page-header">
+    <h1>Categories</h1>
+    <a href="/admin/categories/create" class="btn btn-primary">Create Category</a>
+  </div>
+
+  <div class="filters">
+    <form method="GET" class="filter-form">
+      <input type="text" name="search" placeholder="Search categories..." value="<%= search || '' %>">
+      <select name="status" onchange="this.form.submit()">
+        <option value="">All Status</option>
+        <option value="active" <%= status === 'active' ? 'selected' : '' %>>Active</option>
+        <option value="inactive" <%= status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+      </select>
+      <button type="submit" class="btn btn-sm">Search</button>
+    </form>
+  </div>
+  
+  <% if (categories.length > 0) { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Articles</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% categories.forEach(category => { %>
+          <tr>
+            <td><%= category.name %></td>
+            <td><%= category.slug %></td>
+            <td><%= category.articleCount %></td>
+            <td><%= category.order %></td>
+            <td>
+              <span class="badge <%= category.isActive ? 'badge-published' : 'badge-draft' %>">
+                <%= category.isActive ? 'Active' : 'Inactive' %>
+              </span>
+            </td>
+            <td class="actions">
+              <a href="/admin/categories/edit/<%= category._id %>" class="btn btn-sm">Edit</a>
+              <% if (category.articleCount === 0) { %>
+                <button class="btn btn-sm btn-danger delete-category-btn" data-category-id="<%= category._id %>">Delete</button>
+              <% } else { %>
+                <span style="font-size: 0.85rem; color: #999; font-style: italic;">(<%= category.articleCount %> article<%= category.articleCount > 1 ? 's' : '' %>)</span>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="empty-state">No categories yet. <a href="/admin/categories/create">Create your first category</a></p>
+  <% } %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-category-btn');
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const categoryId = this.getAttribute('data-category-id');
+        deleteCategory(categoryId);
+      });
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>
+

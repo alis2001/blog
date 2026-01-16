@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+
+<div class="category-hero">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/">Home</a> / <%= category.name %>
+    </div>
+    <h1><%= category.name %></h1>
+    <% if (category.description) { %>
+      <p><%= category.description %></p>
+    <% } %>
+  </div>
+</div>
+
+<div class="container">
+  <div class="category-content animate-section">
+    <% if (articles.length > 0) { %>
+      <div class="articles-grid-category">
+        <% articles.forEach(article => { %>
+          <article class="category-article-card">
+            <% if (article.featuredImage) { %>
+              <div class="category-article-image">
+                <img src="<%= article.featuredImage %>" alt="<%= article.title %>">
+              </div>
+            <% } %>
+            <div class="category-article-content">
+              <div class="article-meta-small">
+                <span class="date"><%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                <span class="views"><%= article.views %> views</span>
+              </div>
+              <h2><a href="/article/<%= article.slug %>"><%= article.title %></a></h2>
+              <% if (article.excerpt) { %>
+                <p><%= article.excerpt %></p>
+              <% } %>
+              <a href="/article/<%= article.slug %>" class="article-link">Read Full Article →</a>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+      
+      <% if (totalPages > 1) { %>
+        <div class="pagination">
+          <% if (currentPage > 1) { %>
+            <a href="?page=<%= currentPage - 1 %>" class="pagination-prev">← Previous</a>
+          <% } %>
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <% if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) { %>
+              <a href="?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>">
+                <%= i %>
+              </a>
+            <% } else if (i === currentPage - 3 || i === currentPage + 3) { %>
+              <span class="pagination-ellipsis">...</span>
+            <% } %>
+          <% } %>
+          <% if (currentPage < totalPages) { %>
+            <a href="?page=<%= currentPage + 1 %>" class="pagination-next">Next →</a>
+          <% } %>
+        </div>
+      <% } %>
+    <% } else { %>
+      <div class="empty-state-box">
+        <h3>No Articles Yet</h3>
+        <p>There are currently no published articles in this category.</p>
+        <a href="/" class="back-link">← Return to Homepage</a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+

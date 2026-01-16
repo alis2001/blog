@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+
+<div class="admin-container">
+  <h1>Dashboard</h1>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total Articles</h3>
+      <p class="stat-number"><%= stats.totalArticles %></p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>Published</h3>
+      <p class="stat-number"><%= stats.publishedArticles %></p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>Drafts</h3>
+      <p class="stat-number"><%= stats.draftArticles %></p>
+    </div>
+    
+    <div class="stat-card">
+      <h3>Categories</h3>
+      <p class="stat-number"><%= stats.totalCategories %></p>
+    </div>
+  </div>
+  
+  <div class="dashboard-section">
+    <h2>Recent Articles</h2>
+    
+    <% if (recentArticles.length > 0) { %>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentArticles.forEach(article => { %>
+            <tr>
+              <td><%= article.title %></td>
+              <td><%= article.category.name %></td>
+              <td><span class="badge badge-<%= article.status %>"><%= article.status %></span></td>
+              <td><%= new Date(article.createdAt).toLocaleDateString() %></td>
+              <td>
+                <a href="/admin/articles/edit/<%= article._id %>" class="btn btn-sm">Edit</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p class="empty-state">No articles yet. <a href="/admin/articles/create">Create your first article</a></p>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+

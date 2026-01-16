@@ -1,0 +1,92 @@
+<%- include('partials/header') %>
+
+<article class="article-page">
+  <div class="article-container">
+    <header class="article-page-header">
+      <div class="article-breadcrumb">
+        <a href="/">Home</a> / <a href="/category/<%= article.category.slug %>"><%= article.category.name %></a> / <%= article.title %>
+      </div>
+      <div class="article-category-tag">
+        <a href="/category/<%= article.category.slug %>"><%= article.category.name %></a>
+      </div>
+      <h1><%= article.title %></h1>
+      <% if (article.excerpt) { %>
+        <p class="article-excerpt"><%= article.excerpt %></p>
+      <% } %>
+      <div class="article-page-meta">
+        <span class="meta-item"><%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+        <span class="meta-divider">•</span>
+        <span class="meta-item"><%= article.views %> views</span>
+      </div>
+
+      <% if (article.source && article.source.type !== 'original' && article.source.name) { %>
+        <div class="article-source-attribution">
+          <strong>Source:</strong> 
+          <% if (article.source.url) { %>
+            <a href="<%= article.source.url %>" target="_blank" rel="noopener noreferrer"><%= article.source.name %></a>
+          <% } else { %>
+            <%= article.source.name %>
+          <% } %>
+          <% if (article.source.author) { %>
+            by <%= article.source.author %>
+          <% } %>
+          <% if (article.source.originalPublishDate) { %>
+            (<%= new Date(article.source.originalPublishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>)
+          <% } %>
+        </div>
+      <% } %>
+    </header>
+    
+    <% if (article.featuredImage) { %>
+      <div class="article-featured-image">
+        <img src="<%= article.featuredImage %>" alt="<%= article.title %>">
+      </div>
+    <% } %>
+    
+    <div class="article-content-wrapper">
+      <%- article.content %>
+    </div>
+    
+    <% if (article.tags && article.tags.length > 0) { %>
+      <footer class="article-footer">
+        <div class="article-tags-section">
+          <span class="tags-label">Topics:</span>
+          <div class="tags-list">
+            <% article.tags.forEach(tag => { %>
+              <span class="article-tag"><%= tag %></span>
+            <% }) %>
+          </div>
+        </div>
+      </footer>
+    <% } %>
+  </div>
+</article>
+
+<% if (relatedArticles.length > 0) { %>
+  <section class="related-section">
+    <div class="container">
+      <h2 class="related-title">More from <%= article.category.name %></h2>
+      <div class="related-grid">
+        <% relatedArticles.forEach(relatedArticle => { %>
+          <article class="related-card">
+            <% if (relatedArticle.featuredImage) { %>
+              <div class="related-image">
+                <img src="<%= relatedArticle.featuredImage %>" alt="<%= relatedArticle.title %>">
+              </div>
+            <% } %>
+            <div class="related-content">
+              <h3><a href="/article/<%= relatedArticle.slug %>"><%= relatedArticle.title %></a></h3>
+              <% if (relatedArticle.excerpt) { %>
+                <p><%= relatedArticle.excerpt %></p>
+              <% } %>
+              <a href="/article/<%= relatedArticle.slug %>" class="related-link">Read Article →</a>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </div>
+  </section>
+<% } %>
+
+<%- include('partials/footer') %>
+

@@ -1,0 +1,91 @@
+<%- include('../partials/header') %>
+
+<div class="admin-container">
+  <div class="page-header">
+    <h1>Articles</h1>
+    <a href="/admin/articles/create" class="btn btn-primary">Create Article</a>
+  </div>
+  
+  <div class="filters">
+    <form method="GET" class="filter-form">
+      <select name="status" onchange="this.form.submit()">
+        <option value="">All Status</option>
+        <option value="draft" <%= filters.status === 'draft' ? 'selected' : '' %>>Draft</option>
+        <option value="published" <%= filters.status === 'published' ? 'selected' : '' %>>Published</option>
+        <option value="archived" <%= filters.status === 'archived' ? 'selected' : '' %>>Archived</option>
+      </select>
+      
+      <select name="category" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        <% categories.forEach(cat => { %>
+          <option value="<%= cat._id %>" <%= filters.category === cat._id.toString() ? 'selected' : '' %>>
+            <%= cat.name %>
+          </option>
+        <% }) %>
+      </select>
+    </form>
+  </div>
+  
+  <% if (articles.length > 0) { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Views</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% articles.forEach(article => { %>
+          <tr>
+            <td>
+              <%= article.title %>
+              <% if (article.isFeatured) { %>
+                <span class="badge badge-featured">Featured</span>
+              <% } %>
+            </td>
+            <td><%= article.category.name %></td>
+            <td><span class="badge badge-<%= article.status %>"><%= article.status %></span></td>
+            <td><%= article.views %></td>
+            <td><%= new Date(article.createdAt).toLocaleDateString() %></td>
+            <td class="actions">
+              <a href="/admin/articles/edit/<%= article._id %>" class="btn btn-sm">Edit</a>
+              <button class="btn btn-sm btn-danger delete-article-btn" data-article-id="<%= article._id %>">Delete</button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    
+    <% if (totalPages > 1) { %>
+      <div class="pagination">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %>&status=<%= filters.status || '' %>&category=<%= filters.category || '' %>" 
+             class="<%= i === currentPage ? 'active' : '' %>">
+            <%= i %>
+          </a>
+        <% } %>
+      </div>
+    <% } %>
+  <% } else { %>
+    <p class="empty-state">No articles found. <a href="/admin/articles/create">Create your first article</a></p>
+  <% } %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const deleteButtons = document.querySelectorAll('.delete-article-btn');
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const articleId = this.getAttribute('data-article-id');
+        deleteArticle(articleId);
+      });
+    });
+  });
+</script>
+
+<%- include('../partials/footer') %>
+

@@ -1,0 +1,117 @@
+<%- include('partials/header') %>
+
+<div class="page-hero history-hero">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/">Home</a> / History
+    </div>
+    <h1>Pahlavi Dynasty History</h1>
+    <p>Documenting the historical period of the Pahlavi dynasty from 1925 to 1979</p>
+  </div>
+</div>
+
+<div class="container">
+  
+  <section class="history-intro animate-section">
+    <div class="intro-content">
+      <h2>Historical Overview</h2>
+      <p>The Pahlavi dynasty ruled Iran from 1925 until the Islamic Revolution of 1979. This section provides comprehensive documentation of this significant period in Iranian history, including the reigns of Reza Shah Pahlavi and his son Mohammad Reza Shah Pahlavi.</p>
+    </div>
+  </section>
+
+  <% if (featuredArticles.length > 0) { %>
+    <section class="history-featured">
+      <h2>Essential Reading</h2>
+      <div class="featured-history-grid">
+        <% featuredArticles.forEach(article => { %>
+          <article class="history-featured-card">
+            <% if (article.featuredImage) { %>
+              <div class="history-featured-image">
+                <img src="<%= article.featuredImage %>" alt="<%= article.title %>">
+              </div>
+            <% } %>
+            <div class="history-featured-content">
+              <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+              <% if (article.excerpt) { %>
+                <p><%= article.excerpt %></p>
+              <% } %>
+              <a href="/article/<%= article.slug %>" class="read-link">Read Article →</a>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+  <div class="history-sections">
+    <% if (timelineArticles.length > 0) { %>
+      <section class="history-section">
+        <div class="section-header">
+          <h2>Historical Timeline</h2>
+          <p>Key events and chronological documentation</p>
+        </div>
+        <div class="timeline-grid">
+          <% timelineArticles.forEach(article => { %>
+            <article class="timeline-card">
+              <div class="timeline-date">
+                <%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+              </div>
+              <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+              <% if (article.excerpt) { %>
+                <p><%= article.excerpt %></p>
+              <% } %>
+            </article>
+          <% }) %>
+        </div>
+      </section>
+    <% } %>
+
+    <% if (biographyArticles.length > 0) { %>
+      <section class="history-section">
+        <div class="section-header">
+          <h2>Key Figures</h2>
+          <p>Biographical profiles of important historical figures</p>
+        </div>
+        <div class="biography-grid">
+          <% biographyArticles.forEach(article => { %>
+            <article class="biography-card">
+              <% if (article.featuredImage) { %>
+                <div class="biography-image">
+                  <img src="<%= article.featuredImage %>" alt="<%= article.title %>">
+                </div>
+              <% } %>
+              <div class="biography-content">
+                <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+                <a href="/article/<%= article.slug %>" class="bio-link">View Profile →</a>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      </section>
+    <% } %>
+  </div>
+
+  <section class="all-history">
+    <div class="section-header">
+      <h2>All Historical Articles</h2>
+      <a href="/category/<%= category.slug %>" class="view-all-link">View All Articles →</a>
+    </div>
+    <div class="history-articles-list">
+      <% allHistoryArticles.forEach(article => { %>
+        <article class="history-list-item">
+          <div class="list-item-meta">
+            <span class="list-date"><%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+          </div>
+          <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+          <% if (article.excerpt) { %>
+            <p><%= article.excerpt %></p>
+          <% } %>
+        </article>
+      <% }) %>
+    </div>
+  </section>
+
+</div>
+
+<%- include('partials/footer') %>
+

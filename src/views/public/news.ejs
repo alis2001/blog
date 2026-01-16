@@ -1,0 +1,110 @@
+<%- include('partials/header') %>
+
+<div class="page-hero news-hero">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/">Home</a> / News
+    </div>
+    <h1>Latest News & Updates</h1>
+    <p>Current developments and information about Iran</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <% if (breakingNews) { %>
+    <section class="breaking-news animate-section">
+      <div class="breaking-label">Latest Update</div>
+      <article class="breaking-article">
+        <% if (breakingNews.featuredImage) { %>
+          <div class="breaking-image">
+            <img src="<%= breakingNews.featuredImage %>" alt="<%= breakingNews.title %>">
+          </div>
+        <% } %>
+        <div class="breaking-content">
+          <div class="breaking-meta">
+            <span class="breaking-date"><%= new Date(breakingNews.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+          </div>
+          <h2><a href="/article/<%= breakingNews.slug %>"><%= breakingNews.title %></a></h2>
+          <% if (breakingNews.excerpt) { %>
+            <p><%= breakingNews.excerpt %></p>
+          <% } %>
+          <a href="/article/<%= breakingNews.slug %>" class="breaking-link">Read Full Story →</a>
+        </div>
+      </article>
+    </section>
+  <% } %>
+
+  <% if (thisWeek.length > 0) { %>
+    <section class="news-section animate-section">
+      <div class="news-section-header">
+        <h2>This Week</h2>
+      </div>
+      <div class="news-grid">
+        <% thisWeek.forEach(article => { %>
+          <article class="news-card">
+            <% if (article.featuredImage) { %>
+              <div class="news-card-image">
+                <img src="<%= article.featuredImage %>" alt="<%= article.title %>">
+              </div>
+            <% } %>
+            <div class="news-card-content">
+              <div class="news-card-date">
+                <%= new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %>
+              </div>
+              <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+              <% if (article.excerpt) { %>
+                <p><%= article.excerpt.substring(0, 120) %>...</p>
+              <% } %>
+              <a href="/article/<%= article.slug %>" class="news-read-link">Read More →</a>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+  <% if (thisMonth.length > 0) { %>
+    <section class="news-section">
+      <div class="news-section-header">
+        <h2>Recent Updates</h2>
+      </div>
+      <div class="news-list">
+        <% thisMonth.forEach(article => { %>
+          <article class="news-list-item">
+            <div class="news-list-date">
+              <%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+            </div>
+            <div class="news-list-content">
+              <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+              <% if (article.excerpt) { %>
+                <p><%= article.excerpt %></p>
+              <% } %>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+  <% if (older.length > 0) { %>
+    <section class="news-section">
+      <div class="news-section-header">
+        <h2>Archive</h2>
+        <a href="/category/<%= category.slug %>" class="archive-link">View All News →</a>
+      </div>
+      <div class="archive-list">
+        <% older.slice(0, 10).forEach(article => { %>
+          <article class="archive-item">
+            <span class="archive-date"><%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+            <h4><a href="/article/<%= article.slug %>"><%= article.title %></a></h4>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+</div>
+
+<%- include('partials/footer') %>
+

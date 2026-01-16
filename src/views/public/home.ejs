@@ -1,0 +1,94 @@
+<%- include('partials/header') %>
+
+<section class="hero-banner">
+  <div class="container">
+    <h1>For a Free Iran</h1>
+    <p>Hope, Unity, and Prosperity for All Iranians</p>
+  </div>
+</section>
+
+<div class="container">
+  
+  <section class="mission-statement animate-section">
+    <div class="mission-content">
+      <h2>Our Mission</h2>
+      <p>This website serves as an educational resource documenting the history of the Pahlavi dynasty and providing information about current developments in Iran. All content is presented for informational and educational purposes.</p>
+    </div>
+  </section>
+
+  <% if (featuredArticles.length > 0) { %>
+    <section class="featured-section animate-section">
+      <h2>Featured Content</h2>
+      <div class="featured-grid">
+        <% featuredArticles.forEach(article => { %>
+          <article class="featured-card">
+            <% if (article.featuredImage) { %>
+              <div class="featured-image">
+                <img src="<%= article.featuredImage %>" alt="<%= article.title %>">
+                <span class="featured-label">Featured</span>
+              </div>
+            <% } %>
+            <div class="featured-content">
+              <span class="category-badge"><%= article.category.name %></span>
+              <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+              <% if (article.excerpt) { %>
+                <p><%= article.excerpt %></p>
+              <% } %>
+              <div class="featured-meta">
+                <span class="date"><%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+              </div>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+  <section class="categories-section animate-section">
+    <h2>Browse by Category</h2>
+    <div class="category-grid">
+      <a href="/history" class="category-box">
+        <h3>History</h3>
+        <p>Historical articles about the Pahlavi dynasty and Iran</p>
+        <span class="category-arrow">→</span>
+      </a>
+      
+      <a href="/news" class="category-box">
+        <h3>News</h3>
+        <p>Latest news and updates about Iran</p>
+        <span class="category-arrow">→</span>
+      </a>
+      
+      <a href="/reza-pahlavi" class="category-box">
+        <h3>Reza Pahlavi</h3>
+        <p>Biography and advocacy for democracy and freedom</p>
+        <span class="category-arrow">→</span>
+      </a>
+      
+      <% if (typeof categories !== 'undefined' && categories) { %>
+        <% categories.forEach(category => { %>
+          <% if (category.slug !== 'history' && category.slug !== 'news' && category.slug !== 'reza-pahlavi') { %>
+            <a href="/category/<%= category.slug %>" class="category-box">
+              <h3><%= category.name %></h3>
+              <% if (category.description) { %>
+                <p><%= category.description %></p>
+              <% } %>
+              <span class="category-arrow">→</span>
+            </a>
+          <% } %>
+        <% }) %>
+      <% } %>
+    </div>
+  </section>
+
+  <section class="disclaimer-section animate-section">
+    <div class="disclaimer-box">
+      <h3>Disclaimer</h3>
+      <p>This website is an independent information portal. All content is provided for educational and informational purposes only. News articles and updates are fully sourced from credible international agencies, with appropriate attribution and links to original sources. We strive to present accurate information about historical events and current developments.</p>
+    </div>
+  </section>
+
+</div>
+
+<%- include('partials/footer') %>
+
