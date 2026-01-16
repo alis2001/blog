@@ -737,26 +737,26 @@
   }
   
   .hero-banner h1 {
-    font-size: 1.8rem;
-    margin-bottom: 8px;
+    font-size: 2rem;
+    margin-bottom: 0;
+    margin-top: 0;
   }
   
   .hero-banner > .container > p {
-    margin-bottom: 15px;
-    font-size: 0.9rem;
+    display: none;
   }
   
   .dynasty-portraits {
-    gap: 15px;
-    margin-top: 10px;
+    gap: 12px;
+    margin-top: 5px;
     max-width: 350px;
   }
   
   .portrait-image {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   
   .portrait-name {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 }
