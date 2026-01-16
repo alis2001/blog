@@ -67,10 +67,10 @@ const sessionConfig = {
   saveUninitialized: false,
   name: 'sessionId',
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: false, // Set to true once HTTPS is enabled
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: 'strict'
+    sameSite: 'lax' // Changed from 'strict' for better compatibility
   }
 };
 
