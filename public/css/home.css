@@ -736,9 +736,13 @@
     height: 250px;
   }
   
+  .hero-banner > .container > p {
+    margin-bottom: 25px;
+  }
+  
   .dynasty-portraits {
-    gap: 35px;
-    margin-top: 40px;
+    gap: 20px;
+    margin-top: 20px;
     max-width: 350px;
   }
   
