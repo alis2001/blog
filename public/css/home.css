@@ -581,11 +581,12 @@
 .dynasty-portraits {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 50px;
+  gap: 40px;
   margin-top: 60px;
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0 20px;
 }
 
 .portrait-frame {
@@ -653,16 +654,17 @@
   margin-bottom: 50px;
 }
 
+/* Tablet: Stack vertically */
 @media (max-width: 992px) {
   .dynasty-portraits {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: 400px;
+    padding: 0 20px;
   }
   
-  .portrait-frame:last-child {
-    grid-column: 1 / -1;
-    max-width: 350px;
-    margin: 0 auto;
+  .portrait-image {
+    max-width: 100%;
   }
 }
 
@@ -735,24 +737,12 @@
   }
   
   .dynasty-portraits {
-    grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 35px;
     margin-top: 40px;
-  }
-  
-  .portrait-frame:last-child {
-    grid-column: auto;
-    max-width: 100%;
-  }
-  
-  .portrait-frame {
     max-width: 350px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
   }
   
-  .portrait-image {
-    max-width: 100%;
+  .portrait-name {
+    font-size: 0.95rem;
   }
 }
