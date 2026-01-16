@@ -76,11 +76,8 @@ const sessionConfig = {
 
 if (process.env.NODE_ENV === 'production') {
   sessionConfig.store = MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI,
-    touchAfter: 24 * 3600,
-    crypto: {
-      secret: process.env.SESSION_SECRET
-    }
+    mongoUrl: process.env.MONGODB_URI || process.env.MONGODB_URI_PROD,
+    touchAfter: 24 * 3600
   });
 }
 
