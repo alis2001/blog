@@ -1,0 +1,90 @@
+<%- include('../partials/header') %>
+
+<div class="admin-container">
+  <div class="page-header">
+    <h1>Message Details</h1>
+    <a href="/admin/messages" class="btn btn-sm">← Back to Messages</a>
+  </div>
+  
+  <div class="message-detail-card">
+    <div class="message-detail-header">
+      <table style="width: 100%; border: none;">
+        <tr>
+          <td style="width: 80px; font-weight: 400; color: #666; padding: 8px 0;">From:</td>
+          <td style="padding: 8px 0;"><strong><%= message.name %></strong> &lt;<%= message.email %>&gt;</td>
+        </tr>
+        <tr>
+          <td style="width: 80px; font-weight: 400; color: #666; padding: 8px 0;">Subject:</td>
+          <td style="padding: 8px 0;"><strong><%= message.subject %></strong></td>
+        </tr>
+        <tr>
+          <td style="width: 80px; font-weight: 400; color: #666; padding: 8px 0;">Date:</td>
+          <td style="padding: 8px 0;"><%= new Date(message.createdAt).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) %></td>
+        </tr>
+        <% if (message.isRead && message.readBy) { %>
+        <tr>
+          <td style="width: 80px; font-weight: 400; color: #666; padding: 8px 0;">Read:</td>
+          <td style="padding: 8px 0;">By <%= message.readBy.email %> on <%= new Date(message.readAt).toLocaleDateString() %></td>
+        </tr>
+        <% } %>
+      </table>
+    </div>
+    
+    <div class="message-detail-body">
+      <p style="white-space: pre-wrap; line-height: 1.8;"><%= message.message %></p>
+    </div>
+    
+    <div class="message-detail-actions">
+      <a href="mailto:<%= message.email %>?subject=Re: <%= encodeURIComponent(message.subject) %>" class="btn">Reply via Email</a>
+      <% if (!message.isArchived) { %>
+        <button class="btn btn-secondary message-action-btn" data-action="archive" data-id="<%= message._id %>">Archive</button>
+      <% } %>
+      <button class="btn btn-danger message-action-btn" data-action="delete" data-id="<%= message._id %>">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const actionButtons = document.querySelectorAll('.message-action-btn');
+  actionButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      const action = this.getAttribute('data-action');
+      const id = this.getAttribute('data-id');
+      
+      if (action === 'delete') {
+        if (!confirm('Delete this message permanently?')) return;
+        fetch('/admin/messages/' + id, { 
+          method: 'DELETE', 
+          headers: { 'Content-Type': 'application/json' } 
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) { 
+          if (data.success) {
+            window.location.href = '/admin/messages';
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(function(err) { alert('Error: ' + err.message); });
+      } else if (action === 'archive') {
+        fetch('/admin/messages/' + id + '/archive', { 
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' } 
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) { 
+          if (data.success) {
+            window.location.href = '/admin/messages';
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(function(err) { alert('Error: ' + err.message); });
+      }
+    });
+  });
+});
+</script>
+
+<%- include('../partials/footer') %>

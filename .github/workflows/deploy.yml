@@ -1,0 +1,91 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            echo "🚀 Starting deployment..."
+            
+            # Navigate to project directory
+            cd ~/blog || exit 1
+            
+            # Pull latest changes
+            echo "📥 Pulling latest code..."
+            git pull origin main || git pull origin master
+            
+            # Stop containers
+            echo "🛑 Stopping containers..."
+            docker-compose -f docker-compose.production.yml down
+            
+            # Remove old images
+            echo "🧹 Cleaning up old images..."
+            docker image prune -f
+            
+            # Build and start containers
+            echo "🐳 Building and starting containers..."
+            docker-compose -f docker-compose.production.yml up -d --build
+            
+            # Wait for containers to be healthy
+            echo "⏳ Waiting for containers to start..."
+            sleep 10
+            
+            # Check container status
+            echo "✅ Checking container status..."
+            docker-compose -f docker-compose.production.yml ps
+            
+            # Show logs
+            echo "📋 Recent logs:"
+            docker-compose -f docker-compose.production.yml logs --tail=20
+            
+            echo "✨ Deployment complete!"
+
+      - name: Verify Deployment
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            # Test if app is responding
+            echo "🧪 Testing application..."
+            sleep 5
+            curl -f http://localhost:3000/ || exit 1
+            echo "✅ Application is responding!"
+            
+            # Check disk space
+            echo "💾 Disk usage:"
+            df -h | grep -v loop
+            
+            # Check container health
+            echo "🏥 Container health status:"
+            docker ps --format "table {{.Names}}\t{{.Status}}"
+
+      - name: Deployment Status
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi

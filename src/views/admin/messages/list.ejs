@@ -1,0 +1,85 @@
+<%- include('../partials/header') %>
+
+<div class="admin-container">
+  <div class="page-header">
+    <h1>Messages</h1>
+    <% if (unreadCount > 0) { %>
+      <span style="font-size: 0.9rem; color: #666; font-weight: 300;"><%= unreadCount %> unread</span>
+    <% } %>
+  </div>
+  
+  <div class="filters">
+    <div class="filter-tabs">
+      <a href="/admin/messages" class="filter-tab <%= currentFilter === 'all' ? 'active' : '' %>">All</a>
+      <a href="/admin/messages?filter=unread" class="filter-tab <%= currentFilter === 'unread' ? 'active' : '' %>">Unread</a>
+      <a href="/admin/messages?filter=read" class="filter-tab <%= currentFilter === 'read' ? 'active' : '' %>">Read</a>
+      <a href="/admin/messages?filter=archived" class="filter-tab <%= currentFilter === 'archived' ? 'active' : '' %>">Archived</a>
+    </div>
+  </div>
+  
+  <% if (messages.length > 0) { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>From</th>
+          <th>Subject</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% messages.forEach(message => { %>
+          <tr class="<%= !message.isRead ? 'message-unread' : '' %>">
+            <td>
+              <strong><%= message.name %></strong><br>
+              <small style="color: #666; font-size: 0.85rem;"><%= message.email %></small>
+            </td>
+            <td>
+              <a href="/admin/messages/<%= message._id %>" style="color: #000; text-decoration: none;"><%= message.subject %></a>
+              <% if (!message.isRead) { %><span class="badge" style="background: #000; color: #fff; margin-left: 8px;">NEW</span><% } %>
+            </td>
+            <td><%= new Date(message.createdAt).toLocaleDateString() %></td>
+            <td><span class="badge <%= message.isRead ? 'badge-published' : 'badge-draft' %>"><%= message.isRead ? 'Read' : 'Unread' %></span></td>
+            <td class="actions">
+              <a href="/admin/messages/<%= message._id %>" class="btn btn-sm">View</a>
+              <button class="btn btn-sm btn-danger message-delete-btn" data-message-id="<%= message._id %>">Delete</button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p class="empty-state">No messages found.</p>
+  <% } %>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const deleteButtons = document.querySelectorAll('.message-delete-btn');
+  deleteButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      const messageId = this.getAttribute('data-message-id');
+      if (!confirm('Delete this message permanently?')) return;
+      
+      fetch('/admin/messages/' + messageId, { 
+        method: 'DELETE', 
+        headers: { 'Content-Type': 'application/json' } 
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data.success) {
+          window.location.reload();
+        } else {
+          alert(data.message || 'Failed to delete message');
+        }
+      })
+      .catch(function(err) {
+        alert('Error: ' + err.message);
+      });
+    });
+  });
+});
+</script>
+
+<%- include('../partials/footer') %>

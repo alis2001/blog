@@ -490,3 +490,70 @@ body {
   border: 1px solid #e5e5e5;
 }
 
+
+/* Messages - Simple additions to existing admin.css */
+.filter-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-tab {
+  padding: 10px 20px;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  color: #000000;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.filter-tab:hover {
+  border-color: #000000;
+}
+
+.filter-tab.active {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.message-unread {
+  background: #fafafa;
+  border-left: 3px solid #000000;
+}
+
+.message-detail-card {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+}
+
+.message-detail-header {
+  padding: 30px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fafafa;
+}
+
+.message-detail-body {
+  padding: 40px;
+}
+
+.message-detail-actions {
+  padding: 25px 30px;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: #000000;
+  border-color: #e5e5e5;
+}
+
+.btn-secondary:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}

@@ -1,6 +1,8 @@
 const Article = require('../../models/Article');
 const Category = require('../../models/Category');
+const Subscription = require('../../models/Subscription');
 const sanitizeHtml = require('sanitize-html');
+const { sendNewsNotification } = require('../../utils/emailService');
 
 exports.getArticles = async (req, res) => {
   try {
@@ -109,6 +111,24 @@ exports.postCreateArticle = async (req, res) => {
     });
     
     await article.save();
+    
+    // Send email notifications if it's a published news article
+    if (article.status === 'published') {
+      const category = await Category.findById(article.category);
+      if (category && category.slug === 'news') {
+        // Get all active subscribers
+        const subscribers = await Subscription.find({ isActive: true });
+        if (subscribers.length > 0) {
+          // Populate category and send notifications (don't wait for completion)
+          const populatedArticle = await Article.findById(article._id).populate('category', 'name slug');
+          sendNewsNotification(populatedArticle, subscribers).catch(err => {
+            console.error('Failed to send news notifications:', err);
+          });
+          console.log(`Sending news notification to ${subscribers.length} subscribers for: ${article.title}`);
+        }
+      }
+    }
+    
     res.redirect('/admin/articles');
   } catch (error) {
     console.error('Create article error:', error);
@@ -172,6 +192,11 @@ exports.postEditArticle = async (req, res) => {
       });
     }
     
+    // Track if article is being published for the first time
+    const wasNotPublished = article.status !== 'published';
+    const willBePublished = req.body.status === 'published';
+    const isNewlyPublished = wasNotPublished && willBePublished;
+    
     const sanitizedContent = sanitizeHtml(req.body.content, {
       allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'h1', 'h2']),
       allowedAttributes: {
@@ -205,6 +230,24 @@ exports.postEditArticle = async (req, res) => {
     }
     
     await article.save();
+    
+    // Send email notifications if article is newly published and is news
+    if (isNewlyPublished) {
+      const category = await Category.findById(article.category);
+      if (category && category.slug === 'news') {
+        // Get all active subscribers
+        const subscribers = await Subscription.find({ isActive: true });
+        if (subscribers.length > 0) {
+          // Populate category and send notifications (don't wait for completion)
+          const populatedArticle = await Article.findById(article._id).populate('category', 'name slug');
+          sendNewsNotification(populatedArticle, subscribers).catch(err => {
+            console.error('Failed to send news notifications:', err);
+          });
+          console.log(`Sending news notification to ${subscribers.length} subscribers for: ${article.title}`);
+        }
+      }
+    }
+    
     res.redirect('/admin/articles');
   } catch (error) {
     console.error('Edit article error:', error);

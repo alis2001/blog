@@ -23,6 +23,16 @@
       <h3>Categories</h3>
       <p class="stat-number"><%= stats.totalCategories %></p>
     </div>
+    
+    <% if (typeof stats.unreadMessages !== 'undefined') { %>
+    <div class="stat-card">
+      <h3>Messages</h3>
+      <p class="stat-number"><%= stats.unreadMessages %></p>
+      <% if (stats.unreadMessages > 0) { %>
+        <small style="display: block; margin-top: 10px; font-size: 0.75rem; color: #666;"><%= stats.unreadMessages %> unread</small>
+      <% } %>
+    </div>
+    <% } %>
   </div>
   
   <div class="dashboard-section">
@@ -60,4 +70,3 @@
 </div>
 
 <%- include('partials/footer') %>
-

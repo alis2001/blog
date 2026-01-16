@@ -1,0 +1,82 @@
+═══════════════════════════════════════════════════════════════
+         QUICK EMAIL SETUP - pahlaviforiran@gmail.com
+═══════════════════════════════════════════════════════════════
+
+STEP 1: Generate Gmail App Password
+───────────────────────────────────────────────────────────────
+1. Visit: https://myaccount.google.com/apppasswords
+2. Sign in to pahlaviforiran@gmail.com
+3. If prompted, enable 2-Factor Authentication first
+4. Select: Mail + Other (Custom name)
+5. Name it: "Pahlavi Iran Newsletter"
+6. Click Generate
+7. Copy the 16-character password (format: xxxx xxxx xxxx xxxx)
+
+STEP 2: Update .env File
+───────────────────────────────────────────────────────────────
+Add these lines to your .env file:
+
+EMAIL_SERVICE=gmail
+EMAIL_USER=pahlaviforiran@gmail.com
+EMAIL_PASSWORD=xxxxxxxxxxxxxxxx
+EMAIL_FROM="Pahlavi for Iran <pahlaviforiran@gmail.com>"
+SITE_URL=http://localhost:3001
+
+STEP 3: Restart Server
+───────────────────────────────────────────────────────────────
+Ctrl+C to stop the server, then:
+npm run dev
+
+STEP 4: Test Welcome Email
+───────────────────────────────────────────────────────────────
+1. Go to: http://localhost:3001
+2. Scroll to newsletter section
+3. Enter a test email
+4. Click "Subscribe Free"
+5. Check email inbox for welcome message
+
+STEP 5: Test News Notification
+───────────────────────────────────────────────────────────────
+1. Go to: http://localhost:3001/admin
+2. Create new article:
+   - Category: News
+   - Status: Published
+   - Add title and content
+3. Click "Create Article"
+4. Check all subscriber emails for notification
+
+═══════════════════════════════════════════════════════════════
+                    AUTOMATED EMAIL TRIGGERS
+═══════════════════════════════════════════════════════════════
+
+✉ WELCOME EMAIL
+   When: User subscribes
+   To: New subscriber
+   Contains: Welcome message, subscription details
+
+✉ NEWS NOTIFICATION
+   When: News article published (automatic)
+   To: All active subscribers
+   Contains: Article title, image, excerpt, link
+
+═══════════════════════════════════════════════════════════════
+                        TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+❌ "Authentication failed"
+   → Check EMAIL_PASSWORD is correct app password
+   → Regenerate app password if needed
+   
+❌ No emails received
+   → Check spam/junk folder
+   → Verify EMAIL_USER is pahlaviforiran@gmail.com
+   → Check server console for errors
+
+❌ News notification not sent
+   → Ensure article category is "news"
+   → Ensure article status is "published"
+   → Check if there are subscribers in database
+
+═══════════════════════════════════════════════════════════════
+For detailed documentation, see: EMAIL_SETUP.md
+═══════════════════════════════════════════════════════════════

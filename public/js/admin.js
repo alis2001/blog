@@ -143,3 +143,69 @@ function deactivateUser(id) {
   });
 }
 
+
+// Subscription Management Functions
+function toggleSubscriptionStatus(id, currentlyActive) {
+  const action = currentlyActive ? 'deactivate' : 'activate';
+  if (!confirm(`Are you sure you want to ${action} this subscription?`)) {
+    return;
+  }
+  
+  fetch(`/admin/subscriptions/${id}/toggle`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      window.location.reload();
+    } else {
+      alert(data.message || 'Failed to update subscription');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Failed to update subscription');
+  });
+}
+
+function deleteSubscription(id, email) {
+  if (!confirm(`Are you sure you want to permanently delete the subscription for ${email}?`)) {
+    return;
+  }
+  
+  fetch(`/admin/subscriptions/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Remove row from table with animation
+      const row = document.getElementById(`subscription-${id}`);
+      if (row) {
+        row.style.opacity = '0.5';
+        setTimeout(() => {
+          row.remove();
+          // Reload if no more rows
+          const tbody = document.querySelector('.data-table tbody');
+          if (tbody && tbody.children.length === 0) {
+            window.location.reload();
+          }
+        }, 300);
+      } else {
+        window.location.reload();
+      }
+    } else {
+      alert(data.message || 'Failed to delete subscription');
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Failed to delete subscription');
+  });
+}

@@ -10,6 +10,8 @@ const articleController = require('../controllers/admin/articleController');
 const categoryController = require('../controllers/admin/categoryController');
 const registrationController = require('../controllers/admin/registrationController');
 const userController = require('../controllers/admin/userController');
+const messageController = require('../controllers/admin/messageController');
+const subscriptionController = require('../controllers/admin/subscriptionController');
 
 router.get('/login', authController.getLogin);
 router.post('/login', loginLimiter, validateLogin, handleValidationErrors, authController.postLogin);
@@ -40,6 +42,22 @@ router.get('/users', userController.getUsers);
 router.post('/users/:id/approve', userController.approveUser);
 router.post('/users/:id/reject', userController.rejectUser);
 router.post('/users/:id/deactivate', userController.deactivateUser);
+
+// Messages
+router.get('/messages', messageController.getMessages);
+router.post('/messages/mark-all-read', messageController.markAllAsRead);
+router.get('/messages/unread-count', messageController.getUnreadCount);
+router.get('/messages/:id', messageController.getMessage);
+router.post('/messages/:id/read', messageController.markAsRead);
+router.post('/messages/:id/unread', messageController.markAsUnread);
+router.post('/messages/:id/archive', messageController.archiveMessage);
+router.delete('/messages/:id', messageController.deleteMessage);
+
+// Subscriptions
+router.get('/subscriptions', subscriptionController.getSubscriptions);
+router.post('/subscriptions/add', subscriptionController.postAddSubscription);
+router.post('/subscriptions/:id/toggle', subscriptionController.toggleSubscriptionStatus);
+router.delete('/subscriptions/:id', subscriptionController.deleteSubscription);
 
 module.exports = router;
 

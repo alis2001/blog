@@ -1,5 +1,47 @@
   </main>
   
+  <!-- Floating Contact Button -->
+  <button class="contact-fab" id="contactFabBtn" aria-label="Contact Us">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </button>
+  
+  <!-- Contact Modal -->
+  <div class="contact-modal-overlay" id="contactModalOverlay">
+    <div class="contact-modal">
+      <button class="contact-modal-close" id="contactModalCloseBtn">&times;</button>
+      <h2>Contact Us</h2>
+      <p class="contact-modal-subtitle">Send us a message and we'll get back to you soon.</p>
+      
+      <form id="contactForm">
+        <div class="contact-form-group">
+          <label for="contactName">Your Name</label>
+          <input type="text" id="contactName" name="name" required placeholder="Enter your name">
+        </div>
+        
+        <div class="contact-form-group">
+          <label for="contactEmail">Email Address</label>
+          <input type="email" id="contactEmail" name="email" required placeholder="Enter your email">
+        </div>
+        
+        <div class="contact-form-group">
+          <label for="contactSubject">Subject</label>
+          <input type="text" id="contactSubject" name="subject" required placeholder="What is this about?">
+        </div>
+        
+        <div class="contact-form-group">
+          <label for="contactMessage">Message</label>
+          <textarea id="contactMessage" name="message" rows="5" required placeholder="Write your message here..."></textarea>
+        </div>
+        
+        <div class="contact-form-status" id="contactFormStatus"></div>
+        
+        <button type="submit" class="contact-submit-btn" id="contactSubmitBtn">Send Message</button>
+      </form>
+    </div>
+  </div>
+  
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
@@ -36,8 +78,8 @@
     </div>
   </footer>
   
-  <script src="/js/animations.js"></script>
-  <script src="/js/public.js"></script>
+  <script src="/js/animations.js?v=<%= Date.now() %>"></script>
+  <script src="/js/public.js?v=<%= Date.now() %>"></script>
 </body>
 </html>
 

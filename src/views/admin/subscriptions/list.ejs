@@ -1,0 +1,346 @@
+<%- include('../partials/header') %>
+
+<div class="admin-container">
+  <div class="page-header">
+    <h1>Subscriptions</h1>
+    <button class="btn btn-primary" onclick="openAddSubscriptionModal()">Add Subscription</button>
+  </div>
+  
+  <div class="filters">
+    <form method="GET" class="filter-form">
+      <input 
+        type="text" 
+        name="search" 
+        placeholder="Search by email..." 
+        value="<%= filters.search || '' %>"
+        class="search-input"
+      >
+      
+      <select name="status" onchange="this.form.submit()">
+        <option value="">All Status</option>
+        <option value="active" <%= filters.status === 'active' ? 'selected' : '' %>>Active</option>
+        <option value="inactive" <%= filters.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+      </select>
+      
+      <% if (filters.search || filters.status) { %>
+        <a href="/admin/subscriptions" class="btn btn-secondary">Clear</a>
+      <% } %>
+    </form>
+  </div>
+
+  <% if (subscriptions.length > 0) { %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Subscribed</th>
+          <th>Last Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% subscriptions.forEach(subscription => { %>
+          <tr id="subscription-<%= subscription._id %>">
+            <td><%= subscription.email %></td>
+            <td>
+              <span class="badge <%= subscription.isActive ? 'badge-published' : 'badge-archived' %>">
+                <%= subscription.isActive ? 'Active' : 'Inactive' %>
+              </span>
+            </td>
+            <td><%= new Date(subscription.subscribedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+            <td><%= new Date(subscription.updatedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+            <td class="actions">
+              <button 
+                class="btn btn-sm <%= subscription.isActive ? 'btn-danger' : 'btn-primary' %> toggle-status-btn" 
+                data-id="<%= subscription._id %>"
+                data-active="<%= subscription.isActive %>"
+              >
+                <%= subscription.isActive ? 'Deactivate' : 'Activate' %>
+              </button>
+              <button 
+                class="btn btn-sm btn-danger delete-subscription-btn" 
+                data-id="<%= subscription._id %>"
+                data-email="<%= subscription.email %>"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <% if (totalPages > 1) { %>
+      <div class="pagination">
+        <% if (currentPage > 1) { %>
+          <a href="?page=<%= currentPage - 1 %><%= filters.search ? '&search=' + filters.search : '' %><%= filters.status ? '&status=' + filters.status : '' %>" class="btn btn-secondary">Previous</a>
+        <% } %>
+        
+        <span class="pagination-info">Page <%= currentPage %> of <%= totalPages %></span>
+        
+        <% if (currentPage < totalPages) { %>
+          <a href="?page=<%= currentPage + 1 %><%= filters.search ? '&search=' + filters.search : '' %><%= filters.status ? '&status=' + filters.status : '' %>" class="btn btn-secondary">Next</a>
+        <% } %>
+      </div>
+    <% } %>
+  <% } else { %>
+    <div class="empty-state">
+      <p>No subscriptions found.</p>
+      <% if (filters.search || filters.status) { %>
+        <a href="/admin/subscriptions" class="btn btn-secondary">View All</a>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<!-- Add Subscription Modal -->
+<div class="modal-overlay" id="addSubscriptionModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Subscription</h2>
+      <button class="modal-close" onclick="closeAddSubscriptionModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="addSubscriptionForm">
+        <div class="form-group">
+          <label for="subscriptionEmail">Email Address</label>
+          <input 
+            type="email" 
+            id="subscriptionEmail" 
+            name="email" 
+            required
+            placeholder="subscriber@example.com"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input 
+              type="checkbox" 
+              id="sendWelcomeEmail" 
+              name="sendWelcome"
+              checked
+              style="width: auto; margin-right: 10px;"
+            >
+            Send welcome email to subscriber
+          </label>
+        </div>
+        
+        <div class="form-status" id="addSubscriptionStatus"></div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="addSubscriptionBtn">Add Subscription</button>
+          <button type="button" class="btn btn-secondary" onclick="closeAddSubscriptionModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.search-input {
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  min-width: 300px;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: #ffffff;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  padding: 30px;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: 1px solid #e5e5e5;
+  font-size: 24px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.form-status {
+  margin-bottom: 20px;
+  padding: 15px;
+  display: none;
+  font-size: 0.95rem;
+}
+
+.form-status.success {
+  display: block;
+  background: #f0fff0;
+  border: 1px solid #239F40;
+  color: #239F40;
+}
+
+.form-status.error {
+  display: block;
+  background: #fff0f0;
+  border: 1px solid #DA0000;
+  color: #DA0000;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666666;
+}
+</style>
+
+<script>
+function openAddSubscriptionModal() {
+  document.getElementById('addSubscriptionModal').classList.add('active');
+  document.getElementById('addSubscriptionForm').reset();
+  document.getElementById('addSubscriptionStatus').className = 'form-status';
+  document.getElementById('addSubscriptionStatus').textContent = '';
+}
+
+function closeAddSubscriptionModal() {
+  document.getElementById('addSubscriptionModal').classList.remove('active');
+}
+
+// Add subscription form handler
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('addSubscriptionForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('subscriptionEmail').value.trim();
+      const sendWelcome = document.getElementById('sendWelcomeEmail').checked;
+      const btn = document.getElementById('addSubscriptionBtn');
+      const status = document.getElementById('addSubscriptionStatus');
+      
+      btn.disabled = true;
+      btn.textContent = 'Adding...';
+      status.className = 'form-status';
+      status.textContent = '';
+      
+      fetch('/admin/subscriptions/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, sendWelcome })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          status.className = 'form-status success';
+          status.textContent = data.message;
+          document.getElementById('addSubscriptionForm').reset();
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } else {
+          status.className = 'form-status error';
+          status.textContent = data.message;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        status.className = 'form-status error';
+        status.textContent = 'An error occurred. Please try again.';
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = 'Add Subscription';
+      });
+    });
+  }
+
+  // Toggle status buttons
+  document.querySelectorAll('.toggle-status-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      const isActive = this.getAttribute('data-active') === 'true';
+      toggleSubscriptionStatus(id, isActive);
+    });
+  });
+
+  // Delete subscription buttons
+  document.querySelectorAll('.delete-subscription-btn').forEach(button => {
+    button.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      const email = this.getAttribute('data-email');
+      deleteSubscription(id, email);
+    });
+  });
+
+  // Close modal on overlay click
+  const modal = document.getElementById('addSubscriptionModal');
+  if (modal) {
+    modal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeAddSubscriptionModal();
+      }
+    });
+  }
+
+  // Close modal on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeAddSubscriptionModal();
+    }
+  });
+});
+</script>
+
+<%- include('../partials/footer') %>

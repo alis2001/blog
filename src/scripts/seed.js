@@ -51,7 +51,10 @@ const seedDatabase = async () => {
       }
     ];
     
-    await Category.insertMany(categories);
+    // Use create() instead of insertMany() to trigger pre-save middleware for slugs
+    for (const cat of categories) {
+      await Category.create(cat);
+    }
     
     console.log('Seed completed successfully!');
     console.log(`Admin email: ${adminEmail}`);

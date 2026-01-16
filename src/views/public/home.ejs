@@ -4,10 +4,58 @@
   <div class="container">
     <h1>For a Free Iran</h1>
     <p>Hope, Unity, and Prosperity for All Iranians</p>
+    
+    <div class="dynasty-portraits">
+      <div class="portrait-frame">
+        <div class="portrait-image">
+          <img src="/images/reza-pahlavi-current.jpg" alt="Reza Pahlavi">
+        </div>
+        <div class="portrait-name">Reza Pahlavi</div>
+      </div>
+      
+      <div class="portrait-frame">
+        <div class="portrait-image">
+          <img src="/images/mohammad-reza-pahlavi.webp" alt="Mohammad Reza Pahlavi">
+        </div>
+        <div class="portrait-name">Mohammad Reza Pahlavi</div>
+      </div>
+      
+      <div class="portrait-frame">
+        <div class="portrait-image">
+          <img src="/images/reza-khan-pahlavi.jpg" alt="Reza Khan Pahlavi">
+        </div>
+        <div class="portrait-name">Reza Khan Pahlavi</div>
+      </div>
+    </div>
   </div>
 </section>
 
 <div class="container">
+  
+  <section class="newsletter-section animate-section">
+    <div class="newsletter-box">
+      <h2>Stay Updated on Iranian Revolution 2026</h2>
+      <p class="newsletter-description">Subscribe to receive the latest news and updates about the Iranian Revolution 2026. Get informed about the ongoing fight for freedom, democracy, and justice in Iran. Our newsletter is <strong>100% FREE</strong> and keeps you updated with breaking news, analysis, and developments as they happen.</p>
+      
+      <form id="subscriptionForm" class="subscription-form">
+        <div class="subscription-input-group">
+          <input 
+            type="email" 
+            id="subscriptionEmail" 
+            name="email" 
+            placeholder="Enter your email address" 
+            required
+            aria-label="Email address for newsletter subscription"
+          >
+          <button type="submit" class="subscription-btn" id="subscriptionBtn">
+            Subscribe Free
+          </button>
+        </div>
+        <div class="subscription-status" id="subscriptionStatus"></div>
+        <p class="subscription-note">100% Free • No spam • Unsubscribe anytime</p>
+      </form>
+    </div>
+  </section>
   
   <section class="mission-statement animate-section">
     <div class="mission-content">
@@ -15,6 +63,40 @@
       <p>This website serves as an educational resource documenting the history of the Pahlavi dynasty and providing information about current developments in Iran. All content is presented for informational and educational purposes.</p>
     </div>
   </section>
+
+  <% if (latestNews && latestNews.length > 0) { %>
+    <section class="latest-news-section animate-section">
+      <h2>Latest News</h2>
+      <div class="news-grid">
+        <% latestNews.forEach(article => { %>
+          <article class="news-card">
+            <% if (article.featuredImage) { %>
+              <div class="news-image">
+                <img src="<%= article.featuredImage %>" alt="<%= article.title %>">
+              </div>
+            <% } %>
+            <div class="news-content">
+              <div class="news-date">
+                <%= new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+              </div>
+              <h3><a href="/article/<%= article.slug %>"><%= article.title %></a></h3>
+              <% if (article.excerpt) { %>
+                <p><%= article.excerpt %></p>
+              <% } %>
+              <% if (article.source && article.source.name) { %>
+                <div class="news-source">
+                  Source: <%= article.source.name %>
+                </div>
+              <% } %>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+      <div class="news-view-all">
+        <a href="/news" class="view-all-link">View All News →</a>
+      </div>
+    </section>
+  <% } %>
 
   <% if (featuredArticles.length > 0) { %>
     <section class="featured-section animate-section">

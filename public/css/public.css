@@ -106,11 +106,10 @@ body {
 
 .hero-banner {
   background: linear-gradient(135deg, #239F40 0%, #ffffff 50%, #DA0000 100%);
-  padding: 0;
+  padding: 120px 0 140px 0;
   margin-bottom: 60px;
   border-bottom: 1px solid #e5e5e5;
-  min-height: 400px;
-  height: 400px;
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   position: relative;
@@ -1122,3 +1121,222 @@ section h2 {
   }
 }
 
+
+/* Floating Contact Button */
+.contact-fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.contact-fab:hover {
+  background: #333333;
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.contact-fab svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Contact Modal Overlay */
+.contact-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.contact-modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* Contact Modal */
+.contact-modal {
+  background: #ffffff;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 50px;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.contact-modal-overlay.active .contact-modal {
+  transform: translateY(0);
+}
+
+.contact-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.contact-modal-close:hover {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+.contact-modal h2 {
+  font-size: 1.8rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+.contact-modal-subtitle {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: #666666;
+  margin-bottom: 35px;
+}
+
+.contact-form-group {
+  margin-bottom: 25px;
+}
+
+.contact-form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.contact-form-group input,
+.contact-form-group textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #e5e5e5;
+  font-size: 1rem;
+  font-weight: 300;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.contact-form-group input:focus,
+.contact-form-group textarea:focus {
+  outline: none;
+  border-color: #000000;
+}
+
+.contact-form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-form-group input::placeholder,
+.contact-form-group textarea::placeholder {
+  color: #999999;
+  font-weight: 300;
+}
+
+.contact-form-status {
+  margin-bottom: 20px;
+  padding: 15px;
+  font-size: 0.9rem;
+  font-weight: 300;
+  display: none;
+}
+
+.contact-form-status.success {
+  display: block;
+  background: #f0fff0;
+  border: 1px solid #239F40;
+  color: #239F40;
+}
+
+.contact-form-status.error {
+  display: block;
+  background: #fff0f0;
+  border: 1px solid #DA0000;
+  color: #DA0000;
+}
+
+.contact-submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #000000;
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-submit-btn:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
+.contact-submit-btn:disabled {
+  background: #cccccc;
+  border-color: #cccccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .contact-fab {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .contact-fab svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .contact-modal {
+    padding: 35px 25px;
+  }
+  
+  .contact-modal h2 {
+    font-size: 1.5rem;
+  }
+}

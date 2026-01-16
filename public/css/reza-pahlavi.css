@@ -1,70 +1,12 @@
-@keyframes shimmerWave {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(50%);
-  }
-}
-
-@keyframes gentleGlow {
-  0%, 100% {
-    box-shadow: 
-      0 4px 20px rgba(35, 159, 64, 0.15),
-      0 0 40px rgba(35, 159, 64, 0.08);
-  }
-  50% {
-    box-shadow: 
-      0 4px 25px rgba(218, 0, 0, 0.15),
-      0 0 45px rgba(218, 0, 0, 0.08);
-  }
-}
+/* Reza Pahlavi Page Styles */
 
 .reza-pahlavi-page {
   background: #ffffff;
 }
 
-/* Override to match other pages exactly */
-.reza-pahlavi-page .page-hero {
-  background: linear-gradient(135deg, #239F40 0%, #ffffff 50%, #DA0000 100%) !important;
-  color: #000000 !important;
-  padding: 0 !important;
-  margin-bottom: 60px !important;
-  border-bottom: 1px solid #e5e5e5 !important;
-  min-height: 400px !important;
-  height: 400px !important;
-  display: flex !important;
-  align-items: center !important;
-  position: relative !important;
-  overflow: hidden !important;
-  animation: gentleGlow 4s ease-in-out infinite !important;
-}
-
-.reza-pahlavi-page .page-hero::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: -100% !important;
-  width: 200% !important;
-  height: 100% !important;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    transparent 40%,
-    rgba(255, 255, 255, 0.15) 45%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0.15) 55%,
-    transparent 60%,
-    transparent 100%
-  ) !important;
-  animation: shimmerWave 6s ease-in-out infinite !important;
-  pointer-events: none !important;
-}
-
-.reza-pahlavi-page .page-hero .container {
-  width: 100% !important;
-  position: relative !important;
-  z-index: 1 !important;
+/* Hero uses .page-hero from sections.css - this just adds the specific class for consistency */
+.reza-pahlavi-hero {
+  background: linear-gradient(135deg, #239F40 0%, #ffffff 50%, #DA0000 100%);
 }
 
 /* Biography Section with Image */
@@ -303,7 +245,7 @@
 
 .vision-card:hover {
   background: #ffffff;
-  border-color: #239F40;
+  border-color: #000000;
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
@@ -336,13 +278,13 @@
 .highlight-item {
   background: #fafafa;
   padding: 30px;
-  border-left: 3px solid #239F40;
+  border: 1px solid #e5e5e5;
   transition: all 0.3s ease;
 }
 
 .highlight-item:hover {
   background: #ffffff;
-  border-left-color: #DA0000;
+  border-color: #000000;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 }
 
@@ -430,7 +372,7 @@
   margin: 50px auto 0;
   padding: 40px;
   background: #ffffff;
-  border-left: 4px solid #239F40;
+  border: 1px solid #e5e5e5;
   font-size: 1.2rem;
   line-height: 1.9;
   font-weight: 300;

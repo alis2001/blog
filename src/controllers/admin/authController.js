@@ -51,12 +51,15 @@ exports.getDashboard = async (req, res) => {
   try {
     const Article = require('../../models/Article');
     const Category = require('../../models/Category');
+    const Message = require('../../models/Message');
     
-    const [totalArticles, publishedArticles, draftArticles, totalCategories] = await Promise.all([
+    const [totalArticles, publishedArticles, draftArticles, totalCategories, unreadMessages, totalMessages] = await Promise.all([
       Article.countDocuments(),
       Article.countDocuments({ status: 'published' }),
       Article.countDocuments({ status: 'draft' }),
-      Category.countDocuments({ isActive: true })
+      Category.countDocuments({ isActive: true }),
+      Message.countDocuments({ isRead: false, isArchived: false }),
+      Message.countDocuments({ isArchived: false })
     ]);
     
     const recentArticles = await Article.find()
@@ -65,15 +68,22 @@ exports.getDashboard = async (req, res) => {
       .populate('category', 'name')
       .populate('author', 'email');
     
+    const recentMessages = await Message.find({ isArchived: false })
+      .sort({ createdAt: -1 })
+      .limit(5);
+    
     res.render('admin/dashboard', {
       user: req.user,
       stats: {
         totalArticles,
         publishedArticles,
         draftArticles,
-        totalCategories
+        totalCategories,
+        unreadMessages,
+        totalMessages
       },
-      recentArticles
+      recentArticles,
+      recentMessages
     });
   } catch (error) {
     console.error('Dashboard error:', error);
