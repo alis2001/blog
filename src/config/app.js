@@ -74,12 +74,13 @@ const sessionConfig = {
   }
 };
 
-if (process.env.NODE_ENV === 'production') {
-  sessionConfig.store = MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI || process.env.MONGODB_URI_PROD,
-    touchAfter: 24 * 3600
-  });
-}
+// Temporarily disabled MongoStore due to errors - using memory store
+// if (process.env.NODE_ENV === 'production') {
+//   sessionConfig.store = MongoStore.create({
+//     mongoUrl: process.env.MONGODB_URI || process.env.MONGODB_URI_PROD,
+//     touchAfter: 24 * 3600
+//   });
+// }
 
 app.use(session(sessionConfig));
 
