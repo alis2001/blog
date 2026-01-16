@@ -67,10 +67,10 @@ const sessionConfig = {
   saveUninitialized: false,
   name: 'sessionId',
   cookie: {
-    secure: false, // Set to true once HTTPS is enabled
+    secure: true, // HTTPS enabled
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000,
-    sameSite: 'lax' // Changed from 'strict' for better compatibility
+    sameSite: 'lax'
   }
 };
 
