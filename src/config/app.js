@@ -29,7 +29,8 @@ app.use(helmet({
       fontSrc: ["'self'"],
       connectSrc: ["'self'"],
       frameSrc: ["'none'"],
-      objectSrc: ["'none'"]
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: null
     }
   },
   crossOriginEmbedderPolicy: false,
