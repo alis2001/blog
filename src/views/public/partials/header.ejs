@@ -3,8 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Pahlavi for Iran' %></title>
-  <meta name="description" content="Information portal for Pahlavi dynasty history and Iran revolution news">
+  
+  <!-- SEO Meta Tags -->
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'Pahlavi for Iran - News, History & Updates' %></title>
+  <meta name="description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'Latest news and comprehensive history of the Pahlavi dynasty and Iran Revolution 2026. Stay informed about democratic reforms and the fight for freedom in Iran.' %>">
+  <meta name="keywords" content="<%= typeof metaKeywords !== 'undefined' ? metaKeywords : 'Iran Revolution 2026, Pahlavi Dynasty, Reza Pahlavi, Iranian History, Iran News, Democracy Iran, Freedom Iran, Mohammad Reza Shah, Persian History' %>">
+  <meta name="author" content="Pahlavi for Iran">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://pahlaviforiran.com' %>">
+  
+  <!-- Open Graph Meta Tags (Facebook, LinkedIn) -->
+  <meta property="og:title" content="<%= typeof pageTitle !== 'undefined' ? pageTitle : 'Pahlavi for Iran - News, History & Updates' %>">
+  <meta property="og:description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'Latest news and comprehensive history of the Pahlavi dynasty and Iran Revolution 2026.' %>">
+  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+  <meta property="og:url" content="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://pahlaviforiran.com' %>">
+  <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : 'https://pahlaviforiran.com/images/pahlavi-banner.png' %>">
+  <meta property="og:site_name" content="Pahlavi for Iran">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= typeof pageTitle !== 'undefined' ? pageTitle : 'Pahlavi for Iran - News, History & Updates' %>">
+  <meta name="twitter:description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'Latest news and comprehensive history of the Pahlavi dynasty and Iran Revolution 2026.' %>">
+  <meta name="twitter:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : 'https://pahlaviforiran.com/images/pahlavi-banner.png' %>">
+  
   <link rel="stylesheet" href="/css/public.css?v=<%= Date.now() %>">
   <link rel="stylesheet" href="/css/home.css?v=<%= Date.now() %>">
   <link rel="stylesheet" href="/css/sections.css?v=<%= Date.now() %>">

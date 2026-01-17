@@ -31,7 +31,11 @@ exports.getHome = async (req, res) => {
       latestArticles,
       latestNews,
       categories,
-      pageTitle: 'Pahlavi for Iran - History and News'
+      pageTitle: 'Pahlavi for Iran - Iran Revolution 2026 News & Pahlavi Dynasty History',
+      metaDescription: 'Latest news about Iran Revolution 2026, democratic reforms, and comprehensive history of the Pahlavi dynasty. Stay informed about the fight for freedom, democracy and justice in Iran.',
+      metaKeywords: 'Iran Revolution 2026, Pahlavi Dynasty, Reza Pahlavi, Iran News, Iranian Protests, Democracy Iran, Freedom Iran, Mohammad Reza Shah, Reza Shah, Persian History',
+      canonicalUrl: 'https://pahlaviforiran.com/',
+      ogType: 'website'
     });
   } catch (error) {
     console.error('Home page error:', error);

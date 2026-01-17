@@ -8,6 +8,11 @@ const newsController = require('../controllers/public/newsController');
 const rezaPahlaviController = require('../controllers/public/rezaPahlaviController');
 const messageController = require('../controllers/public/messageController');
 const subscriptionController = require('../controllers/public/subscriptionController');
+const sitemapController = require('../controllers/public/sitemapController');
+
+// SEO Routes
+router.get('/sitemap.xml', sitemapController.getSitemap);
+router.get('/robots.txt', sitemapController.getRobots);
 
 router.get('/', homeController.getHome);
 router.get('/history', historyController.getHistoryPage);

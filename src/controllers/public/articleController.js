@@ -30,11 +30,25 @@ exports.getArticle = async (req, res) => {
     
     const categories = await Category.find({ isActive: true }).sort({ order: 1 });
     
+    // Generate meta description from excerpt or content
+    const metaDesc = article.excerpt || 
+      (article.content.replace(/<[^>]*>/g, '').substring(0, 155) + '...');
+    
+    // Generate keywords from tags and category
+    const keywords = article.tags && article.tags.length > 0 
+      ? article.tags.join(', ') + ', ' + article.category.name + ', Iran, Pahlavi'
+      : article.category.name + ', Iran News, Pahlavi Dynasty, Iran Revolution 2026';
+    
     res.render('public/article', {
       article,
       relatedArticles,
       categories,
-      pageTitle: article.title
+      pageTitle: article.title + ' - Pahlavi for Iran',
+      metaDescription: metaDesc,
+      metaKeywords: keywords,
+      canonicalUrl: `https://pahlaviforiran.com/article/${article.slug}`,
+      ogType: 'article',
+      ogImage: article.featuredImage || 'https://pahlaviforiran.com/images/pahlavi-banner.png'
     });
   } catch (error) {
     console.error('Get article error:', error);
