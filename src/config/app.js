@@ -27,7 +27,7 @@ app.use(helmet({
       scriptSrc: ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://www.google-analytics.com"],
       imgSrc: ["'self'", "data:", "https:"],
       fontSrc: ["'self'"],
-      connectSrc: ["'self'", "https://www.google-analytics.com", "https://www.googletagmanager.com"],
+      connectSrc: ["'self'", "https://www.google-analytics.com", "https://www.googletagmanager.com", "https://*.google-analytics.com"],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: null
